@@ -3,7 +3,7 @@ package router
 import (
 	"net/http"
 
-	"dojo-microservices/util"
+	"dojo-microservices/commons"
 
 	"dojo-microservices/participantes/routes"
 
@@ -13,11 +13,11 @@ import (
 func NewRouter() *mux.Router {
 
 	router := mux.NewRouter().StrictSlash(true)
-	for _, route := range routes.RoutesConstants {
+	for _, route := range routes.ParticipantesRoutes {
 		var handler http.Handler
 
 		handler = route.HandlerFunc
-		handler = util.Logger(handler, route.Name)
+		handler = commons.Logger(handler, route.Name)
 
 		router.
 			Methods(route.Method).

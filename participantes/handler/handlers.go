@@ -1,19 +1,30 @@
 package handler
 
 import (
-	"dojo-microservices/util/dto"
+	"dojo-microservices/commons/dto"
 	"encoding/json"
-	"fmt"
 	"net/http"
 
+	"dojo-microservices/commons"
+
 	"github.com/gorilla/mux"
+	"gopkg.in/mgo.v2/bson"
 )
 
+// TODO export to yml
+var databaseUrl = "localhost"
+var database = "participantes"
+var collectionName = "participante"
+
 func All(w http.ResponseWriter, r *http.Request) {
-	participantes := dto.Participantes{
-		dto.Participante{Nome: "Suenaga", Cpf: "000.000.000-00"},
-		dto.Participante{Nome: "TESTE", Cpf: "111.111.111-11"},
-	}
+	ds := commons.GetDataStore(databaseUrl)
+	defer ds.Session.Close()
+
+	var participantes dto.Participantes
+
+	// TODO HELPER ?
+	collection := ds.GetCollection(database, collectionName)
+	collection.Find(bson.M{}).All(&participantes)
 
 	json.NewEncoder(w).Encode(participantes)
 }
@@ -22,5 +33,12 @@ func Show(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	participanteId := vars["participanteId"]
 
-	fmt.Fprintln(w, "Id:", participanteId)
+	ds := commons.GetDataStore(databaseUrl)
+	defer ds.Session.Close()
+
+	var participante dto.Participante
+	collection := ds.GetCollection(database, collectionName)
+	collection.FindId(bson.ObjectIdHex(participanteId)).One(&participante)
+
+	json.NewEncoder(w).Encode(participante)
 }

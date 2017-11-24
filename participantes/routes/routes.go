@@ -14,11 +14,11 @@ type Route struct {
 
 type Routes []Route
 
-var RoutesConstants = Routes{
+var ParticipantesRoutes = Routes{
 	Route{
 		"All",
 		"GET",
-		"/participantes",
+		"/",
 		handler.All,
 	},
 	Route{
