@@ -1,0 +1,3 @@
+databaseUrl: localhost
+database: participantes
+collectionName: participante

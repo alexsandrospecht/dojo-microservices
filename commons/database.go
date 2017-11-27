@@ -23,3 +23,13 @@ func GetDataStore(url string) *DataStore {
 func (ds *DataStore) GetCollection(database, collection string) *mgo.Collection {
 	return ds.Session.DB(database).C(collection)
 }
+
+func (ds *DataStore) FindAll(database, collectionName string, query, result interface{}) {
+	collection := ds.GetCollection(database, collectionName)
+	collection.Find(query).All(result)
+}
+
+func (ds *DataStore) FindOne(database, collectionName string, query, result interface{}) {
+	collection := ds.GetCollection(database, collectionName)
+	collection.FindId(query).One(result)
+}
