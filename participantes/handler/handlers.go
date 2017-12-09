@@ -34,3 +34,20 @@ func Show(w http.ResponseWriter, r *http.Request) {
 
 	json.NewEncoder(w).Encode(participante)
 }
+
+func Create(w http.ResponseWriter, r *http.Request) {
+	var participante dto.Participante
+	_ = json.NewDecoder(r.Body).Decode(&participante)
+
+	ds := commons.GetDataStore(Config.GetValue("databaseUrl"))
+	defer ds.Session.Close()
+
+	c := ds.GetCollection(Config.GetValue("database"), Config.GetValue("collectionName"))
+
+	if !participante.ID.Valid() {
+		participante.ID = bson.NewObjectId()
+	}
+	c.Insert(participante)
+
+	json.NewEncoder(w).Encode(participante)
+}

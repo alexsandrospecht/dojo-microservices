@@ -27,4 +27,10 @@ var ParticipantesRoutes = Routes{
 		"/participante/{participanteId}",
 		handler.Show,
 	},
+	Route{
+		"Create",
+		"POST",
+		"/",
+		handler.Create,
+	},
 }
