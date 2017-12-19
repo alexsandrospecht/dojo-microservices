@@ -51,3 +51,15 @@ func Create(w http.ResponseWriter, r *http.Request) {
 
 	json.NewEncoder(w).Encode(participante)
 }
+
+func Delete(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	participanteId := vars["participanteId"]
+
+	ds := commons.GetDataStore(Config.GetValue("databaseUrl"))
+	defer ds.Session.Close()
+
+	ds.Delete(Config.GetValue("database"), Config.GetValue("collectionName"), bson.ObjectIdHex(participanteId))
+
+	w.WriteHeader(http.StatusOK)
+}

@@ -33,4 +33,10 @@ var ParticipantesRoutes = Routes{
 		"/",
 		handler.Create,
 	},
+	Route{
+		"Delete",
+		"DELETE",
+		"/participante/delete/{participanteId}",
+		handler.Delete,
+	},
 }

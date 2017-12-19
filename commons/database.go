@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"gopkg.in/mgo.v2"
+	"gopkg.in/mgo.v2/bson"
 )
 
 type DataStore struct {
@@ -32,4 +33,9 @@ func (ds *DataStore) FindAll(database, collectionName string, query, result inte
 func (ds *DataStore) FindOne(database, collectionName string, query, result interface{}) {
 	collection := ds.GetCollection(database, collectionName)
 	collection.FindId(query).One(result)
+}
+
+func (ds *DataStore) Delete(database, collectionName string, id bson.ObjectId) {
+	collection := ds.GetCollection(database, collectionName)
+	collection.RemoveId(id)
 }
